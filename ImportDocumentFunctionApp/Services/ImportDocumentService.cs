@@ -13,7 +13,7 @@ namespace ImportDocumentFunctionApp.Services;
 internal class ImportDocumentService : IImportDocumentService
 {
     // モデルのベクトルの次元数
-    private const int s_modelDimensions = 1536;
+    private const int _modelDimensions = 1536;
 
     private bool _isIndexCreated = false;
 
@@ -109,7 +109,7 @@ internal class ImportDocumentService : IImportDocumentService
                 new SearchField("textVector", SearchFieldDataType.Collection(SearchFieldDataType.Single))
                 {
                     IsSearchable = true,
-                    VectorSearchDimensions = s_modelDimensions,
+                    VectorSearchDimensions = _modelDimensions,
                     VectorSearchConfiguration = "vector",
                 },
                 new SimpleField("pageNumbers", SearchFieldDataType.Collection(SearchFieldDataType.Int32))
