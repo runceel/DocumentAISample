@@ -1,4 +1,5 @@
-﻿using DocumentAISample.Services.Implementations;
+﻿using DocumentAISample.Repositories;
+using DocumentAISample.Services.Implementations;
 using ImportDocumentFunctionApp.Services;
 using Microsoft.Extensions.Options;
 
@@ -10,7 +11,7 @@ public class ImportDocumentServiceTest
     public async Task ImportTest()
     {
         // arrange
-        var documentService = Substitute.For<IDocumentService>();
+        var documentService = Substitute.For<IDocumentParseService>();
         documentService.ParseDocumentAsync(
             Arg.Any<ParseDocumentInput>())
             .Returns(ValueTask.FromResult(new ParseDocumentResult(new[]
@@ -39,7 +40,7 @@ public class ImportDocumentServiceTest
             .Returns(ValueTask.CompletedTask);
 
         InsertTargetDocument? insertDocumentAsyncArg = default;
-        var searchService = Substitute.For<ISearchService>();
+        var searchService = Substitute.For<IDocumentRepository>();
         searchService.InsertDocumentAsync(
             Arg.Do<InsertTargetDocument>(x => insertDocumentAsyncArg = x))
             .Returns(ValueTask.CompletedTask);

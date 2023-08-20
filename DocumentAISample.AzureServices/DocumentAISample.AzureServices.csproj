@@ -6,10 +6,6 @@
     <Nullable>enable</Nullable>
     <RootNamespace>DocumentAISample</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Search.Documents" Version="11.5.0-beta.4" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.17.0" />

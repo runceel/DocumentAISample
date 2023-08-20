@@ -1,14 +1,14 @@
+using Azure.Core;
 using Azure.Identity;
+using DocumentAISample.Repositories;
 using DocumentAISample.Services;
 using DocumentAISample.Services.Implementations;
-using ImportDocumentFunctionApp.Options;
+using DocumentAISample.Utils;
 using ImportDocumentFunctionApp.Services;
-using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
@@ -33,9 +33,6 @@ static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationOptions(this IServiceCollection services)
     {
-        services.AddOptions<CosmosDb>()
-           .BindConfiguration(nameof(CosmosDb))
-           .ValidateDataAnnotations();
         services.AddOptions<ImportDocumentServiceOptions>()
             .BindConfiguration(nameof(ImportDocumentServiceOptions))
             .ValidateDataAnnotations();
@@ -47,22 +44,29 @@ static class ServiceCollectionExtensions
 
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        services.AddSingleton<IDocumentService, AzureDocumentService>();
+        services.AddSingleton(ISystemClock.Instance);
+        services.AddSingleton<IDocumentParseService, AzureDocumentParseService>();
         services.AddSingleton<IEmbeddingsService, AzureEmbeddingsService>();
         services.AddSingleton<IBlobService, AzureBlobService>();
-        services.AddSingleton<ISearchService, AzureSearchService>();
+        services.AddSingleton<IDocumentRepository, AzureSearchDocumentRepository>();
         services.AddSingleton<IImportDocumentService, ImportDocumentService>();
         return services;
     }
 
     public static IServiceCollection AddAzureServices(this IServiceCollection services, HostBuilderContext context)
     {
-        //var credential = new DefaultAzureCredential(options: new()
-        //{
-        //    ExcludeVisualStudioCredential = true,
-        //});
+        static TokenCredential createCredential(HostBuilderContext context)
+        {
+            if (context.HostingEnvironment.IsDevelopment())
+            {
+                return new AzureCliCredential();
+            }
 
-        var credential = new AzureCliCredential();
+            return new DefaultAzureCredential();
+        }
+
+        var credential = createCredential(context);
+        services.AddSingleton(credential);
         services.AddAzureClients(builder =>
         {
             builder.AddSearchIndexClient(context.Configuration.GetSection("Search"));
@@ -72,13 +76,6 @@ static class ServiceCollectionExtensions
             builder.UseCredential(credential);
         });
 
-        services.AddSingleton(provider =>
-        {
-            var options = provider.GetRequiredService<IOptions<CosmosDb>>();
-            return new CosmosClient(
-                options.Value.Endpoint,
-                credential);
-        });
         return services;
     }
 }

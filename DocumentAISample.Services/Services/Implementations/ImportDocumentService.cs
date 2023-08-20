@@ -1,20 +1,21 @@
-﻿using ImportDocumentFunctionApp.Services;
+﻿using DocumentAISample.Repositories;
+using ImportDocumentFunctionApp.Services;
 using Microsoft.Extensions.Options;
 
 namespace DocumentAISample.Services.Implementations;
 public class ImportDocumentService : IImportDocumentService
 {
-    private readonly IDocumentService _documentService;
+    private readonly IDocumentParseService _documentService;
     private readonly IEmbeddingsService _embeddingsService;
     private readonly IBlobService _blobService;
-    private readonly ISearchService _searchService;
+    private readonly IDocumentRepository _searchService;
     private readonly ImportDocumentServiceOptions _options;
 
     public ImportDocumentService(
-        IDocumentService documentService,
+        IDocumentParseService documentService,
         IEmbeddingsService embeddingsService,
         IBlobService blobService,
-        ISearchService searchService,
+        IDocumentRepository searchService,
         IOptions<ImportDocumentServiceOptions> options)
     {
         _documentService = documentService;
@@ -39,10 +40,11 @@ public class ImportDocumentService : IImportDocumentService
 
         var copyTask = _blobService.CopyFromUriAsync(importTarget.Uri,
             _options.ExportContainerName,
-            importTarget.Name);
+            importTarget.Name,
+            cancellationToken);
 
         var insertIndexTask = _searchService.InsertDocumentAsync(
-            new(importTarget.Name, documentChunks),
+            new(_options.ExportContainerName, importTarget.Name, documentChunks),
             cancellationToken);
         await Task.WhenAll(copyTask.AsTask(), insertIndexTask.AsTask())
             .ConfigureAwait(false);

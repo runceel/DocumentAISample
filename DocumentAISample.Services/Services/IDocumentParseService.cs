@@ -1,5 +1,5 @@
 ﻿namespace ImportDocumentFunctionApp.Services;
-public interface IDocumentService
+public interface IDocumentParseService
 {
     ValueTask<ParseDocumentResult> ParseDocumentAsync(ParseDocumentInput input, CancellationToken cancellationToken = default);
 }

@@ -5,4 +5,6 @@ public interface IBlobService
         string destinationContainerName,
         string destinationBlobName,
         CancellationToken cancellationToken = default);
+
+    ValueTask<Uri> GenerateReadUriAsync(string containerName, string documentName, CancellationToken cancellationToken);
 }

@@ -20,7 +20,8 @@ public class AzureEmbeddingsService : IEmbeddingsService
     {
         var result = await _openAIClient.GetEmbeddingsAsync(
             _options.ModelName,
-            new(input.Text));
+            new(input.Text))
+            .ConfigureAwait(false);
         return new(result.Value.Data[0].Embedding);
     }
 }

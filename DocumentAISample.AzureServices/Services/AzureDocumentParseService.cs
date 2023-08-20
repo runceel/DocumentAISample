@@ -3,12 +3,12 @@ using Azure.AI.FormRecognizer.DocumentAnalysis;
 using ImportDocumentFunctionApp.Services;
 
 namespace DocumentAISample.Services;
-public class AzureDocumentService : IDocumentService
+public class AzureDocumentParseService : IDocumentParseService
 {
     private const string _modelId = "prebuilt-document";
     private readonly DocumentAnalysisClient _documentAnalysisClient;
 
-    public AzureDocumentService(DocumentAnalysisClient documentAnalysisClient)
+    public AzureDocumentParseService(DocumentAnalysisClient documentAnalysisClient)
     {
         _documentAnalysisClient = documentAnalysisClient;
     }
@@ -28,7 +28,7 @@ public class AzureDocumentService : IDocumentService
         return new(pageContents.ToArray());
     }
 
-    private PageContent ExtractText(DocumentPage page, IEnumerable<DocumentTable> tables)
+    private static PageContent ExtractText(DocumentPage page, IEnumerable<DocumentTable> tables)
     {
         static string normalize(string text) => text
             .Replace("\r\n", " ")
