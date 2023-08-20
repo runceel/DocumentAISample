@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentAISample.AzureServi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentAISample.Services", "DocumentAISample.Services\DocumentAISample.Services.csproj", "{5EF5B16D-1E16-42F3-9A0F-DD40B3C2E696}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentAISample.Services.Tests", "DocumentAISample.Services.Tests\DocumentAISample.Services.Tests.csproj", "{4709DB54-5A7A-405B-9279-90273479E9D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5EF5B16D-1E16-42F3-9A0F-DD40B3C2E696}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EF5B16D-1E16-42F3-9A0F-DD40B3C2E696}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EF5B16D-1E16-42F3-9A0F-DD40B3C2E696}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4709DB54-5A7A-405B-9279-90273479E9D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4709DB54-5A7A-405B-9279-90273479E9D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4709DB54-5A7A-405B-9279-90273479E9D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4709DB54-5A7A-405B-9279-90273479E9D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

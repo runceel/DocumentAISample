@@ -2,13 +2,13 @@
 using Microsoft.Extensions.Azure;
 
 namespace DocumentAISample.Services;
-public class BlobService : IBlobService
+public class AzureBlobService : IBlobService
 {
     private readonly BlobServiceClient _blobServiceClient;
 
-    public BlobService(IAzureClientFactory<BlobServiceClient> azureClientFactory)
+    public AzureBlobService(BlobServiceClient blobServiceClient)
     {
-        _blobServiceClient = azureClientFactory.CreateClient("OutputBlobService");
+        _blobServiceClient = blobServiceClient;
     }
 
     public async ValueTask CopyFromUriAsync(Uri sourceUri, string destinationContainerName, string destinationBlobName, CancellationToken cancellationToken = default)

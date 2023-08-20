@@ -19,7 +19,7 @@ public class AzureEmbeddingsService : IEmbeddingsService
     public async ValueTask<GenerateEmbeddingsResult> GenerateEmbeddingsAsync(GenerateEmbeddingsInput input, CancellationToken cancellationToken = default)
     {
         var result = await _openAIClient.GetEmbeddingsAsync(
-            _options.ModelId,
+            _options.ModelName,
             new(input.Text));
         return new(result.Value.Data[0].Embedding);
     }
@@ -28,5 +28,5 @@ public class AzureEmbeddingsService : IEmbeddingsService
 public class AzureEmbeddingsServiceOptions
 {
     [Required]
-    public string ModelId { get; set; } = "";
+    public string ModelName { get; set; } = "";
 }

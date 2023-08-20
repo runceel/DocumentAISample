@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 
 namespace DocumentAISample.Services.Implementations;
-internal class ImportDocumentService : IImportDocumentService
+public class ImportDocumentService : IImportDocumentService
 {
     private readonly IDocumentService _documentService;
     private readonly IEmbeddingsService _embeddingsService;
