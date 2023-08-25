@@ -1,0 +1,74 @@
+﻿@page "/"
+@using DocumentAISample.Pages.Forms;
+@using DocumentAISample.Repositories;
+@using DocumentAISample.Services;
+
+@inject IDocumentSearchService DocumentSearchService
+
+<PageTitle>Index</PageTitle>
+
+<h1>Documents search</h1>
+
+<EditForm Model="_searchForm" OnValidSubmit="SearchAsync">
+    <DataAnnotationsValidator />
+    <fieldset disabled="@_isLoading">
+        <label for="keywords" class="form-label">Search</label>
+        <InputText id="keywords" @bind-Value="_searchForm.Keywords" class="form-control" />
+        <ValidationMessage For="() => _searchForm.Keywords" />
+    </fieldset>
+
+    <button type="submit" class="btn btn-primary" disabled="@_isLoading">Search</button>
+</EditForm>
+
+@if (_isLoading)
+{
+    <p>Loading...</p>
+}
+else if (_documents.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Document</th>
+                <th>Text</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var document in _documents)
+            {
+                <tr>
+                    <td><a href="@document.Uri" target="_blank">@document.DocumentName (@string.Join(", ", document.PageNumbers.Select(x => $"p{x}")))</a></td>
+                    <td><pre>@document.Text.Substring(0, document.Text.Length < 500 ? document.Text.Length : 500).Replace(" ", "\n")</pre></td>
+                    <td>@document.Score</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No documents found.</p>
+}
+
+@code {
+    private bool _isLoading = false;
+    private IndexSearchForm _searchForm = new();
+
+    private IReadOnlyCollection<DocumentSearchServiceDocument> _documents = Array.Empty<DocumentSearchServiceDocument>();
+
+    private async Task SearchAsync(EditContext editContext)
+    {
+        if (_isLoading) return;
+        _isLoading = true;
+
+        try
+        {
+            _documents = (await DocumentSearchService.SearchAsync(_searchForm.Keywords)).Documents;
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>ece17821-697f-4823-829a-12179c90701e</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DocumentAISample.AzureServices\DocumentAISample.AzureServices.csproj" />
+    <ProjectReference Include="..\DocumentAISample.Services\DocumentAISample.Services.csproj" />
+  </ItemGroup>
+
+</Project>
